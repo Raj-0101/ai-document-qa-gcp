@@ -17,14 +17,20 @@ class VertexAIService:
     def ask_question(self, document_text: str, question: str):
 
         prompt = f"""
-You are an AI assistant.
+You are an intelligent document assistant.
 
-Answer ONLY using the document below.
+Answer ONLY using the information contained in the document.
+
+If the answer is not present in the document, reply:
+
+"I couldn't find that information in the uploaded document."
 
 Document:
+
 {document_text}
 
 Question:
+
 {question}
 """
 
