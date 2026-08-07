@@ -1,5 +1,5 @@
-import vertexai
-from vertexai.generative_models import GenerativeModel
+from google import genai
+from google.genai.types import HttpOptions
 
 from app.config import PROJECT_ID, LOCATION
 
@@ -7,12 +7,12 @@ from app.config import PROJECT_ID, LOCATION
 class VertexAIService:
 
     def __init__(self):
-        vertexai.init(
+        self.client = genai.Client(
+            vertexai=True,
             project=PROJECT_ID,
-            location=LOCATION
+            location=LOCATION,
+            http_options=HttpOptions(api_version="v1"),
         )
-
-        self.model = GenerativeModel("gemini-2.5-flash")
 
     def ask_question(self, document_text: str, question: str):
 
@@ -28,6 +28,9 @@ Question:
 {question}
 """
 
-        response = self.model.generate_content(prompt)
+        response = self.client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
 
         return response.text
