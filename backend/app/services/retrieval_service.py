@@ -43,7 +43,8 @@ class RetrievalService:
         self,
         document_id: str,
         question: str,
-        top_k: int = 3
+        top_k: int = 3,
+        similarity_threshold: float = 0.55
     ):
 
         # Create embedding for the question
@@ -67,11 +68,14 @@ class RetrievalService:
                 chunk["embedding"]
             )
 
-            results.append({
-                "chunk_index": chunk["chunk_index"],
-                "text": chunk["text"],
-                "similarity": similarity
-            })
+            # Ignore weak matches
+            if similarity >= similarity_threshold:
+
+                results.append({
+                    "chunk_index": chunk["chunk_index"],
+                    "text": chunk["text"],
+                    "similarity": similarity
+                })
 
         # Highest similarity first
         results.sort(

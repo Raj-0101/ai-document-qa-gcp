@@ -1,4 +1,4 @@
-from pypdf import PdfReader
+import fitz
 
 
 class PDFService:
@@ -6,14 +6,25 @@ class PDFService:
     @staticmethod
     def extract_text(file):
 
-        reader = PdfReader(file.file)
+        pdf_bytes = file.file.read()
 
-        text = ""
+        document = fitz.open(
+            stream=pdf_bytes,
+            filetype="pdf"
+        )
 
-        for page in reader.pages:
-            page_text = page.extract_text()
+        pages = []
 
-            if page_text:
-                text += page_text + "\n"
+        for page in document:
 
-        return text
+            text = page.get_text(
+                "text",
+                sort=True
+            )
+
+            if text.strip():
+                pages.append(text)
+
+        document.close()
+
+        return "\n".join(pages)
