@@ -1,4 +1,4 @@
-import fitz
+import pymupdf
 
 
 class PDFService:
@@ -8,7 +8,7 @@ class PDFService:
 
         pdf_bytes = file.file.read()
 
-        document = fitz.open(
+        document = pymupdf.open(
             stream=pdf_bytes,
             filetype="pdf"
         )
