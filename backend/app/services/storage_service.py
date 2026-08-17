@@ -1,13 +1,16 @@
 from google.cloud import storage
-from app.config import BUCKET_NAME
+
+from app.config import BUCKET_NAME, PROJECT_ID
+
 
 class StorageService:
     def __init__(self):
-        self.client = storage.Client()
+        self.client = storage.Client(project=PROJECT_ID)
         self.bucket = self.client.bucket(BUCKET_NAME)
 
     def upload_pdf(self, file):
         blob = self.bucket.blob(file.filename)
+
         blob.upload_from_file(
             file.file,
             content_type=file.content_type

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://ai-document-qa-backend-104102848745.asia-south1.run.app";
 
 function App() {
   const [file, setFile] = useState(null);
