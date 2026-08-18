@@ -41,6 +41,7 @@ The application allows users to upload a PDF, ask multiple questions about it, a
 🚀 Production deployment with Vercel + Google Cloud Run
 
 🏗️ Architecture
+<img width="1536" height="1024" alt="Architecture" src="https://github.com/user-attachments/assets/3ae256e9-9d77-48e3-8798-d970198bf2ab" />
 
 flowchart LR
     U[👤 User] --> F[React + Vite<br/>Vercel]
