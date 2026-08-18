@@ -422,6 +422,16 @@ The backend exposes a /health endpoint for service health checks.
 Raj Bhilare
 
 Computer Engineering | AI • Cloud • Software Development
+## 📸 Screenshots
+
+### Home Page
+![Home Page](Docs/Screenshots/home.png)
+
+### Document Upload
+![Document Upload](Docs/Screenshots/upload.png)
+
+### AI Answer with Sources
+![AI Answer](Docs/Screenshots/answer.png)
 
 ⭐ Why This Project?
 
