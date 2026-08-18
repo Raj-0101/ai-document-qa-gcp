@@ -1,64 +1,138 @@
-AI Document Q&A
+🤖 AI Document Q&A
 
-An AI-powered document question-answering application that lets users upload a PDF and ask questions about its contents.
+Ask questions about your PDFs and get AI-powered answers with relevant document sources.
 
-Live Demo
+
+
+
+
+
+
+🌐 Live Application
 
 Frontend: https://ai-document-qa-gcp.vercel.app/
 
-Backend: https://ai-document-qa-backend-104102848745.asia-south1.run.app
+The application allows users to upload a PDF, ask multiple questions about it, and view AI-generated answers together with the most relevant document chunks.
 
-Features
+✨ Features
 
-Upload PDF documents
+📄 Upload PDF documents
 
-Extract and store document content
+🔍 Extract and split document text into chunks
 
-Split documents into searchable chunks
+🧠 Generate semantic embeddings using Gemini
 
-Generate semantic embeddings with Gemini
+☁️ Store PDFs in Google Cloud Storage
 
-Store documents and embeddings in Google Cloud Firestore
+🗄️ Store documents, chunks, and embeddings in Firestore
 
-Store uploaded PDFs in Google Cloud Storage
+💬 Ask multiple questions about the same document
 
-Retrieve relevant document chunks for a question
+🤖 Generate answers using Gemini
 
-Generate answers using Gemini
+📚 Display relevant source chunks
 
-Show relevant sources and similarity scores
+📊 Show similarity scores for retrieved sources
 
-Responsive, modern React UI
+👀 Expand and collapse long source text
 
-Cloud deployment using Vercel and Google Cloud Run
+⚡ Modern responsive React interface
 
-Architecture
+🚀 Production deployment with Vercel + Google Cloud Run
 
-User
-  |
-  v
-React + Vite (Vercel)
-  |
-  | HTTPS API requests
-  v
-FastAPI (Google Cloud Run)
-  |
-  +--> Google Cloud Storage
-  |       |
-  |       +--> Uploaded PDFs
-  |
-  +--> Firestore
-  |       |
-  |       +--> Documents
-  |       +--> Chunks
-  |       +--> Embeddings
-  |
-  +--> Gemini
-          |
-          +--> Text embeddings
-          +--> AI-generated answers
+🏗️ Architecture
 
-Tech Stack
+flowchart LR
+    U[👤 User] --> F[React + Vite<br/>Vercel]
+
+    F -->|HTTPS| B[FastAPI<br/>Google Cloud Run]
+
+    B --> GCS[(Google Cloud Storage)]
+    B --> FS[(Cloud Firestore)]
+    B --> GEM[Gemini]
+
+    GCS -->|PDF| B
+    B -->|Document chunks<br/>and embeddings| FS
+    FS -->|Relevant chunks| B
+    GEM -->|Embeddings + AI answers| B
+
+    B -->|Answer + sources| F
+
+Request flow
+
+PDF Upload
+    ↓
+React Frontend
+    ↓
+FastAPI on Cloud Run
+    ↓
+Google Cloud Storage
+    ↓
+Text Extraction
+    ↓
+Text Chunking
+    ↓
+Gemini Embeddings
+    ↓
+Firestore
+
+For a question:
+
+User Question
+    ↓
+FastAPI
+    ↓
+Question / document retrieval
+    ↓
+Relevant chunks
+    ↓
+Gemini
+    ↓
+AI Answer + Sources
+    ↓
+React UI
+
+🧠 How the RAG Pipeline Works
+
+This project follows a Retrieval-Augmented Generation style workflow.
+
+1. Upload
+
+The user uploads a PDF through the React frontend.
+
+2. Storage
+
+The PDF is uploaded to Google Cloud Storage.
+
+3. Processing
+
+The backend extracts the document text and divides it into smaller chunks.
+
+4. Embeddings
+
+Gemini generates an embedding for each chunk.
+
+5. Firestore
+
+The document, chunks, and embeddings are stored in Firestore.
+
+6. Question
+
+The user asks a question about the uploaded document.
+
+7. Retrieval
+
+The backend identifies the most relevant document chunks using semantic similarity.
+
+8. Generation
+
+The retrieved context is sent to Gemini to generate the answer.
+
+9. Sources
+
+The frontend displays the answer and the relevant source chunks with similarity scores.
+
+🛠️ Tech Stack
 
 Frontend
 
@@ -78,84 +152,145 @@ FastAPI
 
 Uvicorn
 
-Google Cloud
+Google Cloud client libraries
 
-Cloud Run
+AI
 
-Cloud Storage
-
-Firestore
-
-Artifact Registry
-
-Vertex AI / Gemini
-
-AI / RAG
+Gemini
 
 Gemini Embeddings
 
-Semantic search
-
 Retrieval-Augmented Generation (RAG)
 
-How It Works
+Semantic similarity search
 
-The user selects a PDF.
+Google Cloud
 
-The frontend sends the PDF to the FastAPI backend.
+Google Cloud Run
 
-The backend uploads the PDF to Google Cloud Storage.
+Google Cloud Storage
 
-Text is extracted from the document.
+Google Cloud Firestore
 
-The text is divided into chunks.
+Artifact Registry
 
-Gemini creates embeddings for the chunks.
+Vertex AI / Gemini APIs
 
-Document data, chunks, and embeddings are stored in Firestore.
+Deployment
 
-The user asks a question.
+Vercel
 
-The backend finds the most relevant chunks using semantic similarity.
+Google Cloud Run
 
-Gemini uses the relevant context to generate the answer.
+GitHub
 
-The frontend displays the answer and source chunks.
+📁 Project Structure
 
-Local Development
+ai-document-qa-gcp/
+│
+├── backend/
+│   ├── app/
+│   │   ├── routes/
+│   │   │   ├── upload.py
+│   │   │   └── ask.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── storage_service.py
+│   │   │   ├── firestore_service.py
+│   │   │   ├── pdf_service.py
+│   │   │   └── embedding_service.py
+│   │   │
+│   │   ├── config.py
+│   │   └── main.py
+│   │
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
+└── README.md
+
+🚀 Run Locally
+
+Prerequisites
+
+Python 3.10+
+
+Node.js
+
+Google Cloud project
+
+Google Cloud CLI
+
+Docker (for backend deployment)
 
 Backend
 
 cd backend
 
-Create/activate your Python virtual environment and install dependencies:
+Install dependencies:
 
 pip install -r requirements.txt
 
-Run FastAPI:
+Start FastAPI:
 
 uvicorn app.main:app --reload --port 8000
 
+Backend:
+
+http://localhost:8000
+
+Health check:
+
+http://localhost:8000/health
+
 Frontend
+
+Open another terminal:
 
 cd frontend
 npm.cmd install
 npm.cmd run dev
 
-The local frontend normally runs on:
+Frontend:
 
 http://localhost:5173
 
-Deployment
+☁️ Google Cloud Deployment
 
-Backend
+The backend is containerized with Docker and deployed to Google Cloud Run.
 
-The backend is containerized with Docker and pushed to Google Artifact Registry before deployment to Cloud Run.
+Enable required services
 
-Example:
+gcloud services enable artifactregistry.googleapis.com run.googleapis.com
+
+Create Artifact Registry repository
+
+gcloud artifacts repositories create ai-document-qa `
+  --repository-format=docker `
+  --location=asia-south1 `
+  --description="AI Document Q&A Docker images"
+
+Configure Docker authentication
+
+gcloud auth configure-docker asia-south1-docker.pkg.dev
+
+Build image
 
 docker build -t asia-south1-docker.pkg.dev/PROJECT_ID/ai-document-qa/ai-document-qa-backend:latest .
+
+Push image
+
 docker push asia-south1-docker.pkg.dev/PROJECT_ID/ai-document-qa/ai-document-qa-backend:latest
+
+Deploy to Cloud Run
 
 gcloud run deploy ai-document-qa-backend `
   --image=asia-south1-docker.pkg.dev/PROJECT_ID/ai-document-qa/ai-document-qa-backend:latest `
@@ -164,73 +299,150 @@ gcloud run deploy ai-document-qa-backend `
   --port=8080 `
   --allow-unauthenticated
 
-Frontend
+🔐 Environment Variables
 
-The frontend is deployed through Vercel using the GitHub repository.
-
-Environment Variables
-
-Backend configuration uses environment variables such as:
+The backend uses environment variables such as:
 
 PROJECT_ID
 GOOGLE_CLOUD_PROJECT
 BUCKET_NAME
 LOCATION
 
-Do not commit API keys, service-account JSON files, .env files containing secrets, or other credentials.
+Example:
 
-Project Structure
+PROJECT_ID=your-project-id
+GOOGLE_CLOUD_PROJECT=your-project-id
+BUCKET_NAME=your-bucket-name
+LOCATION=asia-south1
 
-ai-document-qa-gcp/
-|
-├── backend/
-│   ├── app/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── config.py
-│   │   └── main.py
-│   ├── Dockerfile
-│   └── requirements.txt
-|
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx
-│   │   └── App.css
-│   ├── package.json
-│   └── ...
-|
-└── README.md
+Security
 
-Security Notes
+Never commit:
 
-Credentials are provided through Google Cloud authentication and environment configuration.
+.env
+*.json
+service-account keys
+API keys
+private keys
 
-Secrets should never be hard-coded in frontend source code.
+Use Google Cloud IAM and service accounts for production authentication.
 
-Cloud Run uses a Google service account to access Google Cloud services.
+🖼️ Screenshots
 
-CORS should allow only the deployed frontend domain and required local development origins.
+Add screenshots to:
 
-Future Improvements
+docs/
+├── home.png
+├── upload.png
+├── chat.png
+└── sources.png
 
-User authentication
+Then they can be displayed in this README:
 
-Multiple document management
+Home
 
-PDF page-level citations
 
-Conversation history
 
-Streaming AI responses
+Document Chat
 
-Better vector search at larger scale
 
-Document deletion and management
 
-Usage monitoring and rate limiting
+Sources
 
-Author
+
+
+If you do not want to store screenshots in the repository, remove this section.
+
+📊 Google Cloud Components
+
+Service
+
+Purpose
+
+Cloud Run
+
+Hosts the FastAPI backend
+
+Cloud Storage
+
+Stores uploaded PDFs
+
+Firestore
+
+Stores documents, chunks and embeddings
+
+Artifact Registry
+
+Stores Docker images
+
+Gemini
+
+Generates embeddings and answers
+
+Vercel
+
+Hosts the React frontend
+
+🔒 Security & Reliability
+
+Cloud Run uses a Google service account for Google Cloud access.
+
+Cloud Storage and Firestore access is controlled through IAM.
+
+No secret API keys are stored in the frontend.
+
+CORS is configured for the application frontend and local development.
+
+The backend exposes a /health endpoint for service health checks.
+
+🔮 Future Improvements
+
+👤 User authentication
+
+📚 Multiple document management
+
+📑 Page-level PDF citations
+
+💬 Persistent conversation history
+
+⚡ Streaming AI responses
+
+🔎 Improved vector database search
+
+🗑️ Document deletion
+
+📈 Usage monitoring
+
+🛡️ Rate limiting
+
+📱 Further mobile UI improvements
+
+👨‍💻 Author
 
 Raj Bhilare
 
-Built as a cloud-based AI/RAG project using React, FastAPI, Google Cloud and Gemini.
+Computer Engineering | AI • Cloud • Software Development
+
+⭐ Why This Project?
+
+This project combines AI, RAG, cloud computing, backend development, frontend development, databases, and container deployment into one end-to-end application.
+
+It demonstrates how a real AI application can move from:
+
+User Interface
+      ↓
+REST API
+      ↓
+AI Processing
+      ↓
+Cloud Storage
+      ↓
+Database
+      ↓
+Semantic Retrieval
+      ↓
+AI Generation
+      ↓
+Answer + Sources
+
+If you find the project useful, consider giving the repository a ⭐
